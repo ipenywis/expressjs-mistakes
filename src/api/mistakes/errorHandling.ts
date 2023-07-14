@@ -17,6 +17,8 @@ router.get<{}, MessageResponse>("/bad", (req, res) => {
 //Good ✅
 //Define your own Error handler(s) - in app.ts
 router.get<{}, MessageResponse>("/good", (req, res) => {
+  //Make sure to set a custom statusCode for the thrown Error!
+  res.statusCode = 400;
   throw new Error(
     "Something went sideways! but its being handled by our custom error handler"
   );
