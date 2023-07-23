@@ -3,28 +3,38 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 
+require("dotenv").config();
+
 import * as middlewares from "./middlewares";
 import api from "./api";
-import MessageResponse from "./interfaces/MessageResponse";
-
-require("dotenv").config();
+import apiV2 from "./api/v2";
 
 const app = express();
 
+app.use(express.json());
+
+//Good ✅
+//Use Third-party trusted middlewares
+//For Security, Logging and more!
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
 
-app.get<{}, MessageResponse>("/", (req, res) => {
-  res.json({
-    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
-  });
-});
+//-------------------------------------
 
+//Good ✅
+//Using API Versioning
 app.use("/api/v1", api);
 
+app.use("/api/v2", apiV2);
+
+//Bad ❌
+//Not using API Versioning
+app.use("/api", api);
+
 app.use(middlewares.notFound);
+
+//-------------------------------------
 
 //Good ✅
 //Define error handler last

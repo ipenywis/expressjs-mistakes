@@ -12,7 +12,7 @@ router.post<{}, MessageResponse>("/bad", (req, res) => {
 
   if (!body.username) throw new Error("Username is required!");
 
-  if (!body.email) throw new Error("Password is required!");
+  if (!body.email) throw new Error("Email is required!");
 
   console.log("Creating New user for: ", body.username, body.email);
 
@@ -43,7 +43,8 @@ const schema = Joi.object({
 });
 
 //Good ✅
-//Define your own Error handler(s) - in app.ts
+//Run validation middle passing it the desired schema before
+//Every request
 router.post<{}, MessageResponse>(
   "/good",
   validateRequest(schema),
